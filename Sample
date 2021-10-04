@@ -1,0 +1,20 @@
+FROM ubuntu:14.04
+LABEL name="Shubham"
+ENV NAME shubham
+ENV PASS password
+RUN pwd>/tmp/1stpwd.txt
+RUN cd /tmp/
+RUN pwd>/tmp/2ndpwd.txt
+WORKDIR /tmp
+RUN pwd>/tmp/3rdpwd.txt
+RUN apt-get update && apt-get install -y openssh-server && apt-get install -y python
+RUN adduser -d /home/shubham -g root -G sudo -m -p $(echo "$PASS" | openssl passwd -l -stdin) $NAME
+RUN whoami > /tmp/1stwhoami.txt
+USER $NAME
+RUN whoami > /tmp/2ndwhoami.txt
+RUN mkdir -p /tmp/project
+COPY testproject /tmp/project
+ADD testporject.tar /tmp
+EXPOSE 22 80
+CMD {"python"}
+ENTRYPOINT ["tree"]
